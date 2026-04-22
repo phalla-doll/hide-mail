@@ -3,9 +3,10 @@ import { HideRule } from "../shared/types";
 
 const emailInput = document.getElementById("email") as HTMLInputElement;
 const replacementInput = document.getElementById("replacement") as HTMLInputElement;
-const addBtn = document.getElementById("add");
-const list = document.getElementById("rules");
+const addBtn = document.getElementById("add") as HTMLButtonElement | null;
+const list = document.getElementById("rules") as HTMLUListElement | null;
 const enabledCheckbox = document.getElementById("enabled") as HTMLInputElement;
+const openOptionsBtn = document.getElementById("openOptions");
 
 async function render(): Promise<void> {
   const settings = await getSettings();
@@ -16,7 +17,7 @@ async function render(): Promise<void> {
     list.innerHTML = "";
 
     if (settings.rules.length === 0) {
-      const empty = document.createElement("div");
+      const empty = document.createElement("li");
       empty.className = "empty-state";
       empty.textContent = "No rules added yet";
       list.appendChild(empty);
@@ -44,7 +45,10 @@ async function render(): Promise<void> {
 
       const deleteBtn = document.createElement("button");
       deleteBtn.className = "delete-btn";
-      deleteBtn.textContent = "Delete";
+      deleteBtn.textContent = "×";
+      deleteBtn.type = "button";
+      deleteBtn.setAttribute("aria-label", `Delete rule for ${rule.target}`);
+      deleteBtn.title = "Delete rule";
       deleteBtn.addEventListener("click", async () => {
         const s = await getSettings();
         s.rules = s.rules.filter((r: HideRule) => r.id !== rule.id);
@@ -85,6 +89,10 @@ addBtn?.addEventListener("click", async () => {
   emailInput.value = "";
   replacementInput.value = "";
   render();
+});
+
+openOptionsBtn?.addEventListener("click", () => {
+  chrome.runtime.openOptionsPage();
 });
 
 render();
