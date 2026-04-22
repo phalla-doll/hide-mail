@@ -83,8 +83,14 @@
       saveStatus.className = "save-status success";
       saveStatus.textContent = "Settings saved!";
       saveStatus.style.display = "block";
+      requestAnimationFrame(() => {
+        saveStatus.style.opacity = "1";
+      });
       setTimeout(() => {
-        saveStatus.style.display = "none";
+        saveStatus.style.opacity = "0";
+        setTimeout(() => {
+          saveStatus.style.display = "none";
+        }, 200);
       }, 2e3);
     }
   }

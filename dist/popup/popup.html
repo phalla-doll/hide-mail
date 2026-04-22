@@ -5,6 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HideMail</title>
     <style>
+      :root {
+        --bg: #ffffff;
+        --surface: #f5f5f5;
+        --surface-alt: #f9f9f9;
+        --text: #333333;
+        --text-muted: #666666;
+        --primary: #4a90d9;
+        --primary-hover: #3a7bc8;
+        --danger: #e74c3c;
+        --danger-hover: #c0392b;
+        --border: #dddddd;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #1a1a1a;
+          --surface: #2a2a2a;
+          --surface-alt: #333333;
+          --text: #e5e5e5;
+          --text-muted: #a0a0a0;
+          --primary: #5aa0e9;
+          --primary-hover: #4a90d9;
+          --border: #444444;
+        }
+      }
       * {
         box-sizing: border-box;
         margin: 0;
@@ -12,14 +36,17 @@
       }
       body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        -webkit-font-smoothing: antialiased;
         min-width: 300px;
         padding: 16px;
-        background: #fff;
+        background: var(--bg);
+        color: var(--text);
       }
       h3 {
         margin-bottom: 16px;
         font-size: 18px;
-        color: #333;
+        color: var(--text);
+        text-wrap: balance;
       }
       .toggle-row {
         display: flex;
@@ -27,17 +54,19 @@
         gap: 8px;
         margin-bottom: 16px;
         padding: 12px;
-        background: #f5f5f5;
-        border-radius: 8px;
+        background: var(--surface);
+        border-radius: 12px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
       }
       .toggle-row label {
         font-size: 14px;
-        color: #333;
+        color: var(--text);
         flex: 1;
       }
       .toggle-row input[type="checkbox"] {
         width: 20px;
         height: 20px;
+        accent-color: var(--primary);
       }
       .form-row {
         display: flex;
@@ -47,26 +76,37 @@
       }
       input[type="text"] {
         padding: 10px 12px;
-        border: 1px solid #ddd;
-        border-radius: 6px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
         font-size: 14px;
+        background: var(--bg);
+        color: var(--text);
+        transition: border-color 150ms, box-shadow 150ms;
+      }
+      input[type="text"]::placeholder {
+        color: var(--text-muted);
       }
       input[type="text"]:focus {
         outline: none;
-        border-color: #4a90d9;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.15);
       }
       button {
         padding: 10px 16px;
-        background: #4a90d9;
+        background: var(--primary);
         color: #fff;
         border: none;
-        border-radius: 6px;
+        border-radius: 8px;
         font-size: 14px;
         cursor: pointer;
         font-weight: 500;
+        transition: background 150ms, transform 150ms cubic-bezier(0.2, 0, 0, 1);
       }
       button:hover {
-        background: #3a7bc8;
+        background: var(--primary-hover);
+      }
+      button:active {
+        transform: scale(0.96);
       }
       .rules-list {
         margin-top: 16px;
@@ -77,30 +117,48 @@
         align-items: center;
         gap: 8px;
         padding: 10px;
-        background: #f9f9f9;
-        border-radius: 6px;
+        background: var(--surface-alt);
+        border-radius: 8px;
         margin-bottom: 8px;
         font-size: 13px;
+        animation: fadeInUp 200ms cubic-bezier(0.2, 0, 0, 1) backwards;
+      }
+      .rules-list li:nth-child(1) { animation-delay: 0ms; }
+      .rules-list li:nth-child(2) { animation-delay: 50ms; }
+      .rules-list li:nth-child(3) { animation-delay: 100ms; }
+      .rules-list li:nth-child(4) { animation-delay: 150ms; }
+      .rules-list li:nth-child(5) { animation-delay: 200ms; }
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
       .rules-list li input[type="checkbox"] {
         width: 16px;
         height: 16px;
+        accent-color: var(--primary);
       }
       .rules-list .rule-text {
         flex: 1;
         word-break: break-all;
       }
       .rules-list .delete-btn {
-        background: #e74c3c;
+        background: var(--danger);
         padding: 4px 8px;
         font-size: 12px;
+        border-radius: 6px;
       }
-      .delete-btn:hover {
-        background: #c0392b;
+      .rules-list .delete-btn:hover {
+        background: var(--danger-hover);
       }
       .empty-state {
         text-align: center;
-        color: #888;
+        color: var(--text-muted);
         font-size: 13px;
         padding: 20px;
       }
@@ -109,10 +167,12 @@
         margin-top: 16px;
         text-align: center;
         font-size: 13px;
-        color: #4a90d9;
+        color: var(--primary);
         text-decoration: none;
+        transition: opacity 150ms;
       }
       .options-link:hover {
+        opacity: 0.8;
         text-decoration: underline;
       }
     </style>
