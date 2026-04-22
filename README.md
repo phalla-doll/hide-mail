@@ -1,4 +1,3 @@
-```markdown
 # HideMail — Chrome Extension (MVP)
 
 A lightweight Chrome extension that hides specific email addresses on webpages while screen sharing, recording, or streaming.
@@ -12,10 +11,8 @@ HideMail replaces selected email addresses with custom text across webpages.
 Example:
 
 ```
-
 Welcome back, [mantha@gmail.com](mailto:mantha@gmail.com)
 → Welcome back, [hidden email]
-
 ```
 
 ---
@@ -44,6 +41,21 @@ Welcome back, [mantha@gmail.com](mailto:mantha@gmail.com)
 
 ---
 
+## 🏁 Getting started
+
+```bash
+npm install
+npm run build
+```
+
+Then:
+
+1. Open Chrome → `chrome://extensions`
+2. Enable Developer Mode
+3. Load unpacked → select `dist/`
+
+---
+
 ## 📦 Tech stack
 
 - TypeScript
@@ -56,7 +68,6 @@ Welcome back, [mantha@gmail.com](mailto:mantha@gmail.com)
 ## 📁 Project structure
 
 ```
-
 hide-mail-extension/
 ├─ public/
 │  ├─ manifest.json
@@ -82,8 +93,7 @@ hide-mail-extension/
 ├─ package.json
 ├─ tsconfig.json
 └─ vite.config.ts
-
-````
+```
 
 ---
 
@@ -104,11 +114,13 @@ export type Settings = {
   allowlist: string[];
   blocklist: string[];
 };
-````
+```
 
 ---
 
-## 🔧 manifest.json
+## 🧩 Implementation Details
+
+### 🔧 manifest.json
 
 ```json
 {
@@ -136,9 +148,7 @@ export type Settings = {
 }
 ```
 
----
-
-## 🧩 Storage helper
+### 🧩 Storage helper
 
 ```ts
 // src/shared/storage.ts
@@ -162,9 +172,7 @@ export async function saveSettings(settings: Settings) {
 }
 ```
 
----
-
-## 🔍 Regex util
+### 🔍 Regex util
 
 ```ts
 // src/utils/regex.ts
@@ -173,9 +181,7 @@ export function escapeRegExp(value: string): string {
 }
 ```
 
----
-
-## 🧠 DOM walker
+### 🧠 DOM walker
 
 ```ts
 // src/content/dom-walker.ts
@@ -213,9 +219,7 @@ export function walkTextNodes(root: Node, callback: (node: Text) => void) {
 }
 ```
 
----
-
-## 🔁 Replacer logic
+### 🔁 Replacer logic
 
 ```ts
 // src/content/replacer.ts
@@ -236,9 +240,7 @@ export function applyRulesToText(text: string, rules: HideRule[]): string {
 }
 ```
 
----
-
-## ⚙️ Content script
+### ⚙️ Content script
 
 ```ts
 // src/content/content-script.ts
@@ -297,9 +299,7 @@ async function init() {
 init();
 ```
 
----
-
-## 🪟 Popup UI (minimal)
+### 🪟 Popup UI (minimal)
 
 ```html
 <!-- src/popup/popup.html -->
@@ -320,9 +320,7 @@ init();
 </html>
 ```
 
----
-
-## 🧠 Popup logic
+### 🧠 Popup logic
 
 ```ts
 // src/popup/popup.ts
@@ -377,7 +375,6 @@ render();
 ## ⚠️ Limitations
 
 * Cannot replace:
-
   * images
   * videos
   * PDFs
@@ -408,28 +405,6 @@ render();
 
 ---
 
-## 🏁 Getting started
-
-```bash
-npm install
-npm run build
-```
-
-Then:
-
-1. Open Chrome → `chrome://extensions`
-2. Enable Developer Mode
-3. Load unpacked → select `dist/`
-
----
-
-## 🧠 Positioning
-
 **Protect your personal info while screen sharing.**
 
 Simple, fast, local.
-
----
-
-```
-```
