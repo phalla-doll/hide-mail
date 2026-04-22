@@ -1,5 +1,6 @@
 import * as esbuild from "esbuild";
-import { copyFileSync, mkdirSync, existsSync } from "fs";
+import sharp from "sharp";
+import { copyFileSync, mkdirSync, existsSync, readFileSync } from "fs";
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
 
@@ -26,20 +27,19 @@ await esbuild.build({
   logLevel: "info"
 });
 
-// Copy static files
-const staticFiles = [
-  { src: "public/manifest.json", dest: "dist/manifest.json" },
-  { src: "public/icons/icon.svg", dest: "dist/icons/icon.svg" }
-];
+// Generate PNG icons from SVG
+const svgPath = resolve(root, "public/icons/icon.svg");
+const svgBuffer = readFileSync(svgPath);
 
-for (const file of staticFiles) {
-  const srcPath = resolve(root, file.src);
-  const destDir = resolve(root, dirname(file.dest));
-  if (!existsSync(destDir)) {
-    mkdirSync(destDir, { recursive: true });
-  }
-  copyFileSync(srcPath, resolve(root, file.dest));
+const sizes = [16, 48, 128];
+for (const size of sizes) {
+  const outputPath = resolve(root, `dist/icons/icon${size}.png`);
+  await sharp(svgBuffer).resize(size, size).png().toFile(outputPath);
+  console.log(`Generated icon${size}.png`);
 }
+
+// Copy manifest.json
+copyFileSync("public/manifest.json", "dist/manifest.json");
 
 // Copy HTML files
 copyFileSync("src/popup/popup.html", "dist/popup/popup.html");
