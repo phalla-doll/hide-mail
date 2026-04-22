@@ -1,0 +1,17 @@
+{
+  "name": "hide-mail",
+  "version": "0.1.0",
+  "description": "Hide selected email addresses on webpages",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "build:html": "vite build",
+    "copy:static": "node scripts/copy-static.js"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.280",
+    "esbuild": "^0.24.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.12"
+  }
+}
