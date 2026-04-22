@@ -22,13 +22,14 @@
   var addBtn = document.getElementById("add");
   var list = document.getElementById("rules");
   var enabledCheckbox = document.getElementById("enabled");
+  var openOptionsBtn = document.getElementById("openOptions");
   async function render() {
     const settings = await getSettings();
     enabledCheckbox.checked = settings.enabled;
     if (list) {
       list.innerHTML = "";
       if (settings.rules.length === 0) {
-        const empty = document.createElement("div");
+        const empty = document.createElement("li");
         empty.className = "empty-state";
         empty.textContent = "No rules added yet";
         list.appendChild(empty);
@@ -52,7 +53,10 @@
         text.textContent = `${rule.target} \u2192 ${rule.replacement}`;
         const deleteBtn = document.createElement("button");
         deleteBtn.className = "delete-btn";
-        deleteBtn.textContent = "Delete";
+        deleteBtn.textContent = "\xD7";
+        deleteBtn.type = "button";
+        deleteBtn.setAttribute("aria-label", `Delete rule for ${rule.target}`);
+        deleteBtn.title = "Delete rule";
         deleteBtn.addEventListener("click", async () => {
           const s = await getSettings();
           s.rules = s.rules.filter((r) => r.id !== rule.id);
@@ -86,6 +90,9 @@
     emailInput.value = "";
     replacementInput.value = "";
     render();
+  });
+  openOptionsBtn?.addEventListener("click", () => {
+    chrome.runtime.openOptionsPage();
   });
   render();
 })();
